@@ -7,13 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * The main class where it all gets started. You want to used to this class when running the bot on discord.
  */
 public class DiscordBot extends ListenerAdapter {
     //TODO Here you have to insert the Token you got from the first part
-    public static final String DISCORD_TOKEN = "";
+    public static final String DISCORD_TOKEN = getAuthToken();
     /**
      * Logger is a class from a library we included and can be used to write to the console in an orderly manner.
      * The Discord library JDA also uses this library.
@@ -55,6 +58,20 @@ public class DiscordBot extends ListenerAdapter {
              */
             event.getMessage().getChannel().sendMessage("Unexpected error occurred!").queue();
 
+        }
+    }
+
+    private static String getAuthToken() {
+        try {
+            File myObj = new File("src/token.txt");
+            Scanner myReader = new Scanner(myObj);
+            String token = myReader.next();
+            myReader.close();
+            return token;
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("uh oh");
+            return null;
         }
     }
 
