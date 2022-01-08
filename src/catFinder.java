@@ -23,6 +23,7 @@ public class catFinder {
         }
         //assert response != null;
         if (response == null){
+            System.out.println("Error while interacting with catApi");
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
