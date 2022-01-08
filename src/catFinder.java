@@ -29,6 +29,7 @@ public class catFinder {
         try {
             url = new URL(value);
         } catch (Exception e){
+            System.out.println("Error while finding url, retry...");
             getCatImageURL();
         }
         return url;
