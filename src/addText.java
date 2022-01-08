@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 public class addText {
+    //divide caption input in several lines/strings
     static String[] capTextWidth(String text){
         final int maxDigitInLine = 15;
 

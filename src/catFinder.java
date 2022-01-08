@@ -8,13 +8,12 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Scanner;
 import javax.imageio.*;
 import javax.swing.*;
 public class catFinder {
 
-
-    static String getCatImageURL() {
+    //Returns url to cat image, which is fetched from "theCatApi"
+    static URL getCatImageURL() {
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = null;
         HttpRequest request = HttpRequest.newBuilder(
@@ -29,21 +28,23 @@ public class catFinder {
         assert response != null;
 
         String str = response.body();
-        String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid"));
-
-        //System.out.println(response.body());
-        //System.out.printf("value: %s \n",value);
-        return value;
-
+        String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid")); //get URL from response string
+        URL url = null;
+        try {
+            url = new URL(value);
+        } catch (Exception e){
+            getCatImageURL();
+        }
+        return url;
     }
 
-    static void imgFromUrl(String urlol) {
-        Image image = null;
+    //save image from URL to img/img.png
+    static void imgFromUrl(URL url) {
         try {
-            URL url = new URL(urlol);
             BufferedImage img = ImageIO.read(url);
             File file = new File("img/img.png");
 
+            //create new file or overwrite if already there
             if (file.createNewFile()) {
                 ImageIO.write(img, "png", file);
                 System.out.println("File created: " + file.getName());
@@ -51,8 +52,6 @@ public class catFinder {
                 ImageIO.write(img, "png", file);
                 System.out.println("File already exists.");
             }
-
-            
         } catch (IOException e) {
             e.printStackTrace();
         }
