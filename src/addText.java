@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class addText {
     //divide caption input in several lines/strings
-    static String[] capTextWidth(String text){
-        final int maxDigitInLine = 15;
+    static String[] capTextWidth(String text, final int maxDigitInLine){
 
         String[] wordArray = text.split("\\s+");
         ArrayList<StringBuffer> lineArray = new ArrayList<StringBuffer>();
@@ -31,7 +30,6 @@ public class addText {
     }
 
     static void writeOnImg(String text, float lineDistance, float textScale){
-        String[] lines = capTextWidth(text);
         BufferedImage image = null;
         try {
             File img = new File("img/img.png");
@@ -50,6 +48,9 @@ public class addText {
 
         FontMetrics metrics = graphics.getFontMetrics(font);
 
+        int maxCharsPerLine = (int)(image.getWidth() / metrics.charWidth('w'));
+
+        String[] lines = capTextWidth(text, maxCharsPerLine);
         int printHeight = Math.round(
                 image.getHeight() - (metrics.getHeight() * lines.length * lineDistance) - (font.getSize() * .5f)
         );
