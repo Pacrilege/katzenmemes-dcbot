@@ -77,6 +77,7 @@ public class addText {
 
     private static int findTextSize(BufferedImage img, int textLength) {
         double scalingByImageArea = Math.sqrt(img.getWidth() * img.getHeight()) * 0.1;
-        return (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
+        int r = (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
+        return r > 0 ? r : 5;
     }
 }
