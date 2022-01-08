@@ -18,7 +18,7 @@ import java.util.Scanner;
  */
 public class DiscordBot extends ListenerAdapter {
     //TODO Here you have to insert the Token you got from the first part
-    public static final String DISCORD_TOKEN = getAuthToken();
+    public static final String DISCORD_TOKEN = System.getenv("DC_TOKEN");
     /**
      * Logger is a class from a library we included and can be used to write to the console in an orderly manner.
      * The Discord library JDA also uses this library.
@@ -60,20 +60,6 @@ public class DiscordBot extends ListenerAdapter {
              */
             event.getMessage().getChannel().sendMessage("Unexpected error occurred!").queue();
 
-        }
-    }
-
-    private static String getAuthToken() {
-        try {
-            File myObj = new File("src/token.txt");
-            Scanner myReader = new Scanner(myObj);
-            String token = myReader.next();
-            myReader.close();
-            return token;
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("uh oh");
-            return null;
         }
     }
 
