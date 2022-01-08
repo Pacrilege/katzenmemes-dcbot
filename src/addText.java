@@ -28,9 +28,10 @@ public class addText {
         //System.out.println(Arrays.deepToString(arr));
         return arr;
     }
-    static void drawTextWithOutline(String text, int x, int y, Graphics g){
+    static void drawTextWithOutline(String text, int x, int y, Graphics g, int fontheight){
         g.setColor(Color.black);
-        final int ow = 3;
+        int ow = (int)(fontheight / 15);
+        ow = ow > 0 ? ow : 1;
         g.drawString(text, x + ow, y - ow);
         g.drawString(text, x + ow, y + ow);
         g.drawString(text, x - ow, y - ow);
@@ -73,7 +74,7 @@ public class addText {
             System.out.printf("x: %d, y: %d, text: %s\n", textx, texty, line);
 
             printHeight += metrics.getHeight() * lineDistance;
-            drawTextWithOutline(line, textx, texty, graphics);
+            drawTextWithOutline(line, textx, texty, graphics, metrics.getHeight());
             //graphics.drawString(line, textx, texty);
         }
 
