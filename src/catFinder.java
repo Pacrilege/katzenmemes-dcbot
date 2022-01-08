@@ -13,7 +13,7 @@ public class catFinder {
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = null;
         HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("https://api.thecatapi.com/v1/images/search"))
+                        URI.create("https://api.thecatapi.com/v1/images/search?mime_types=png"))
                 .header("x-api-key", System.getenv("CAT_API_TOKEN"))
                 .build();
         try {
@@ -21,7 +21,16 @@ public class catFinder {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        assert response != null;
+        //assert response != null;
+        if (response == null){
+            System.out.println("Error while interacting with catApi");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return getCatImageURL();
+        }
 
         String str = response.body();
         String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid")); //get URL from response string

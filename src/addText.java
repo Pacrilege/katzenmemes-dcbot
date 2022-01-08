@@ -22,11 +22,22 @@ public class addText {
 
         String[] arr = new String[lineArray.size()];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = lineArray.get(i).toString();
+            if (!lineArray.get(i).toString().equals("")) arr[i] = lineArray.get(i).toString();
         }
 
         //System.out.println(Arrays.deepToString(arr));
         return arr;
+    }
+    static void drawTextWithOutline(String text, int x, int y, Graphics g){
+        g.setColor(Color.black);
+        final int ow = 3;
+        g.drawString(text, x + ow, y - ow);
+        g.drawString(text, x + ow, y + ow);
+        g.drawString(text, x - ow, y - ow);
+        g.drawString(text, x - ow, y + ow);
+
+        g.setColor(Color.white);
+        g.drawString(text, x, y);
     }
 
     static void writeOnImg(String text, float lineDistance, float textScale){
@@ -62,8 +73,8 @@ public class addText {
             System.out.printf("x: %d, y: %d, text: %s\n", textx, texty, line);
 
             printHeight += metrics.getHeight() * lineDistance;
-
-            graphics.drawString(line, textx, texty);
+            drawTextWithOutline(line, textx, texty, graphics);
+            //graphics.drawString(line, textx, texty);
         }
 
         try {
