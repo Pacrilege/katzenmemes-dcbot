@@ -10,49 +10,25 @@ import java.util.ArrayList;
 
 
 public class addText {
-    static void capTextWidth(String text){
+    static String[] capTextWidth(String text){
         final int maxDigitInLine = 30;
 
-        if (text.length()<= maxDigitInLine) return;
-        int fac= text.length()/maxDigitInLine + 1;
         String[] wordArray = text.split("\\s+");
-
-        String[] arr = new String[fac+1];
-        Arrays.fill(arr, "");
-
-        StringBuffer[] lineArray = new StringBuffer[arr.length];
-        for (int i = 0; i<arr.length; i++) {
-            lineArray[i] = new StringBuffer(arr[i]);
-        }
-
-
-        int lineCount= 0;
-        for (String s : wordArray) {
-            lineArray[lineCount].append(s).append(" ");
-            if (lineArray[lineCount].length() >= maxDigitInLine) lineCount++;
-        }
-        /*
-        ArrayList<String> arr = new ArrayList<String>(); // Create an ArrayList object
-        Arrays.fill(arr, "");
-
         ArrayList<StringBuffer> lineArray = new ArrayList<StringBuffer>();
 
-        StringBuffer[] lineArray = new StringBuffer[arr.length];
-        for (int i = 0; i<arr.length; i++) {
-            lineArray[i] = new StringBuffer(arr[i]);
-        }
-
-
-        int lineCount= 0;
+        lineArray.add(new StringBuffer(""));
         for (String s : wordArray) {
-            lineArray[lineCount].append(s).append(" ");
-            if (lineArray[lineCount].length() >= maxDigitInLine) lineCount++;
+            lineArray.get(lineArray.size() - 1).append(s).append(" ");
+            if (lineArray.get(lineArray.size() - 1).length() >= maxDigitInLine) lineArray.add(new StringBuffer(""));
         }
 
-        */
+        String[] arr = new String[lineArray.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = lineArray.get(i).toString();
+        }
 
-
-        System.out.println(Arrays.deepToString(lineArray));
+        //System.out.println(Arrays.deepToString(arr));
+        return arr;
     }
 
     static void writeOnImg(String text){
