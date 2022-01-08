@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class addText {
     //divide caption input in several lines/strings
-    static String[] capTextWidth(String text, final int maxDigitInLine){
+    static String[] splitLines(String text, final int maxDigitInLine){
 
         String[] wordArray = text.split("\\s+");
         ArrayList<StringBuffer> lineArray = new ArrayList<StringBuffer>();
@@ -28,6 +28,8 @@ public class addText {
         //System.out.println(Arrays.deepToString(arr));
         return arr;
     }
+
+    // take a wild fucking guess
     static void drawTextWithOutline(String text, int x, int y, Graphics g, int fontheight){
         g.setColor(Color.black);
         int ow = (int)(fontheight / 15);
@@ -62,7 +64,7 @@ public class addText {
 
         int maxCharsPerLine = (int)(image.getWidth() / metrics.charWidth('w'));
 
-        String[] lines = capTextWidth(text, maxCharsPerLine);
+        String[] lines = splitLines(text, maxCharsPerLine);
         int printHeight = Math.round(
                 image.getHeight() - (metrics.getHeight() * lines.length * lineDistance) - (font.getSize() * .5f)
         );
