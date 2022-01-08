@@ -73,11 +73,11 @@ public class DiscordBot extends ListenerAdapter {
             //event.getMessage().getChannel().sendMessage(catFinder.getCatImageURL()).queue();
 
             catFinder.imgFromUrl(catFinder.getCatImageURL());
-            addText.writeOnImg("LOL");
+            addText.writeOnImg("LOL", 1.2f, 1);
             event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
         } else if (cmd.equals("!caption")) {
             catFinder.imgFromUrl(catFinder.getCatImageURL());
-            addText.writeOnImg(parseCommand.nextLine());
+            addText.writeOnImg(parseCommand.nextLine(), 1.2f, 1f);
             event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
         }
     }

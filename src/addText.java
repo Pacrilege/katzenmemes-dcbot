@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class addText {
     static String[] capTextWidth(String text){
-        final int maxDigitInLine = 30;
+        final int maxDigitInLine = 15;
 
         String[] wordArray = text.split("\\s+");
         ArrayList<StringBuffer> lineArray = new ArrayList<StringBuffer>();
@@ -31,8 +31,8 @@ public class addText {
         return arr;
     }
 
-    static void writeOnImg(String text){
-        capTextWidth(text);
+    static void writeOnImg(String text, float lineDistance, float textScale){
+        String[] lines = capTextWidth(text);
         BufferedImage image = null;
         try {
             File img = new File("img/img.png");
@@ -44,18 +44,27 @@ public class addText {
         Graphics graphics = image.getGraphics();
 
         graphics.setColor(Color.BLACK);
-        Font font = new Font("Impact", Font.BOLD, findTextSize(image));
+        Font font = new Font("Impact", Font.BOLD, Math.round(findTextSize(image) * textScale));
 
         graphics.setFont(font);
-        Rectangle rect = new Rectangle(image.getWidth(),image.getHeight());
+        Rectangle rect = new Rectangle(image.getWidth(), image.getHeight());
 
         FontMetrics metrics = graphics.getFontMetrics(font);
-        // Determine the X coordinate for the text
-        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
-        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
-        int y = (int) Math.round(rect.y + ((rect.height - metrics.getHeight()) * 0.9) + metrics.getAscent());
 
-        graphics.drawString(text, x, y);
+        int printHeight = Math.round(
+                image.getHeight() - (metrics.getHeight() * lines.length * lineDistance) - (font.getSize() * .5f)
+        );
+        int textx, texty;
+        for (String line: lines) {
+            textx = rect.x + (rect.width - metrics.stringWidth(line)) / 2;
+            texty = printHeight + metrics.getAscent();
+
+            System.out.printf("x: %d, y: %d, text: %s\n", textx, texty, line);
+
+            printHeight += metrics.getHeight() * lineDistance;
+
+            graphics.drawString(line, textx, texty);
+        }
 
         try {
             ImageIO.write(image, "png", new File(
