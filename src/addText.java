@@ -13,7 +13,6 @@ public class addText {
     static void capTextWidth(String text){
         final int maxDigitInLine = 30;
 
-        if (text.length()<= maxDigitInLine) return;
         int fac= text.length()/maxDigitInLine + 1;
         String[] wordArray = text.split("\\s+");
 
