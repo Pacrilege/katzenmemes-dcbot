@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+
+
 /**
  * The main class where it all gets started. You want to used to this class when running the bot on discord.
  */
@@ -79,8 +81,18 @@ public class DiscordBot extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
         Message message = event.getMessage();
         String content = message.getContentRaw();
-        if(content.equals("!ping")) {
-            event.getMessage().getChannel().sendMessage("pong").queue();
+        Scanner parseCommand = new Scanner(content);
+        String cmd = parseCommand.next();
+        if(cmd.equals("!ping")) {
+            //event.getMessage().getChannel().sendMessage(catFinder.getCatImageURL()).queue();
+
+            catFinder.imgFromUrl(catFinder.getCatImageURL());
+            addText.writeOnImg("LOL");
+            event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
+        } else if (cmd.equals("!caption")) {
+            catFinder.imgFromUrl(catFinder.getCatImageURL());
+            addText.writeOnImg(parseCommand.nextLine());
+            event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
         }
     }
 }
