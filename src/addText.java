@@ -2,8 +2,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
@@ -17,10 +15,10 @@ public class addText {
         String[] wordArray = text.split("\\s+");
         ArrayList<StringBuffer> lineArray = new ArrayList<StringBuffer>();
 
-        lineArray.add(new StringBuffer(""));
+        lineArray.add(new StringBuffer());
         for (String s : wordArray) {
             lineArray.get(lineArray.size() - 1).append(s).append(" ");
-            if (lineArray.get(lineArray.size() - 1).length() >= maxDigitInLine) lineArray.add(new StringBuffer(""));
+            if (lineArray.get(lineArray.size() - 1).length() >= maxDigitInLine) lineArray.add(new StringBuffer());
         }
 
         String[] arr = new String[lineArray.size()];

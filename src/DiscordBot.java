@@ -6,15 +6,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
 
 /**
- * The main class where it all gets started. You want to used to this class when running the bot on discord.
+ * The main class where it all gets started. You want to use to this class when running the bot on discord.
  */
 public class DiscordBot extends ListenerAdapter {
     //TODO Here you have to insert the Token you got from the first part
@@ -80,10 +80,3 @@ public class DiscordBot extends ListenerAdapter {
         }
     }
 }
-
-/**
- * Stuck? Out of ideas? No clue what a callback is?
- * Here is the official user-friendly JDA-Wiki, where you will probably find an answer to most of your question
- * Sonst einfach Tutor anschreiben :D
- * https://github.com/DV8FromTheWorld/JDA/wiki
- */

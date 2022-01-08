@@ -1,15 +1,11 @@
-import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import javax.imageio.*;
-import javax.swing.*;
 public class catFinder {
 
     //Returns url to cat image, which is fetched from "theCatApi"
@@ -23,7 +19,7 @@ public class catFinder {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         assert response != null;
 
