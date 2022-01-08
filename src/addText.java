@@ -43,7 +43,7 @@ public class addText {
         Graphics graphics = image.getGraphics();
 
         graphics.setColor(Color.BLACK);
-        Font font = new Font("Impact", Font.BOLD, Math.round(findTextSize(image) * textScale));
+        Font font = new Font("Impact", Font.BOLD, Math.round(findTextSize(image, text.length())));
 
         graphics.setFont(font);
         Rectangle rect = new Rectangle(image.getWidth(), image.getHeight());
@@ -72,11 +72,10 @@ public class addText {
             e.printStackTrace();
         }
         System.out.println("Image Created");
-
-
     }
 
-    private static int findTextSize(BufferedImage img) {
-        return (int)Math.round(Math.sqrt(img.getWidth() * img.getHeight()) * 0.1);
+    private static int findTextSize(BufferedImage img, int textLength) {
+        double scalingByImageArea = Math.sqrt(img.getWidth() * img.getHeight()) * 0.1;
+        return (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
     }
 }
