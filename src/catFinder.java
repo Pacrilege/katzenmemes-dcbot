@@ -22,7 +22,7 @@ public class catFinder {
             e.printStackTrace();
         }
         //assert response != null;
-        if (response == null){
+        if ((response == null)||(response.body() == null) ){
             System.out.println("Error while interacting with catApi");
             try {
                 Thread.sleep(500);
