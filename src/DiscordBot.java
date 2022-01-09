@@ -58,7 +58,7 @@ public class DiscordBot extends ListenerAdapter {
             PLS DO NOT FORGET THIS
              */
             event.getMessage().getChannel().sendMessage("Unexpected error occurred!").queue();
-
+            event.getMessage().getChannel().sendFile(new File("img/errorcat.gif")).queue();
         }
     }
 
