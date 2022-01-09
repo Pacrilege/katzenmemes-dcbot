@@ -17,7 +17,6 @@ import java.util.Scanner;
  * The main class where it all gets started. You want to use to this class when running the bot on discord.
  */
 public class DiscordBot extends ListenerAdapter {
-    //TODO Here you have to insert the Token you got from the first part
     public static final String DISCORD_TOKEN = System.getenv("DC_TOKEN");
     /**
      * Logger is a class from a library we included and can be used to write to the console in an orderly manner.
