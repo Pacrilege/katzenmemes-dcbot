@@ -14,10 +14,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class Katzenmeme {
-    private final String SAVE_PATH = "img/meme.png";
-    public final File file = new File(SAVE_PATH);
     private Katzenbild bild;
-
 
     public Katzenmeme(String text, int args) {
         bild = new Katzenbild();
@@ -106,8 +103,5 @@ public class Katzenmeme {
         channel.sendFile(bild.getFile()).queue();
     }
 
-    public File getFile() {
-        return file;
-    }
 
 }
