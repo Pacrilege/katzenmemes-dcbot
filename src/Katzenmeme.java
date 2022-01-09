@@ -151,7 +151,7 @@ public class Katzenmeme {
         }
 
         if ((response == null)||(response.body() == null) ){
-            System.out.println("Error while interacting with catApi");
+            System.out.println("Error while interacting with catApi, try again");
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
