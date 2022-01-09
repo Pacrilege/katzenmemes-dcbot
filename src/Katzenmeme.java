@@ -15,10 +15,12 @@ import java.util.ArrayList;
 
 public class Katzenmeme {
     private final String SAVE_PATH = "img/meme.png";
+    public final File file = new File(SAVE_PATH);
+    private Katzenbild bild;
+
 
     public Katzenmeme(String text, int args) {
-
-
+        bild = new Katzenbild();
         writeOnImg(text, 1.2f, 1);
     }
 
@@ -38,8 +40,6 @@ public class Katzenmeme {
         for (int i = 0; i < arr.length; i++) {
             if (!lineArray.get(i).toString().equals("")) arr[i] = lineArray.get(i).toString();
         }
-
-        //System.out.println(Arrays.deepToString(arr));
         return arr;
     }
 
@@ -58,33 +58,23 @@ public class Katzenmeme {
     }
 
     private void writeOnImg(String text, float lineDistance, float textScale){
-        BufferedImage image = null;
-        try {
-            File img = new File(SAVE_PATH);
-            image = ImageIO.read(img);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        Graphics graphics = image.getGraphics();
-
+        Graphics graphics = bild.getImg().getGraphics();
         graphics.setColor(Color.BLACK);
         Font font = new Font(
                 "Arial",
                 Font.BOLD,
-                Math.round(calculateFontSize(image, text.length()) * textScale)
+                Math.round(calculateFontSize(bild.getImg(), text.length()) * textScale)
         );
 
         graphics.setFont(font);
-        Rectangle rect = new Rectangle(image.getWidth(), image.getHeight());
-
+        Rectangle rect = new Rectangle(bild.getImg().getWidth(), bild.getImg().getHeight());
         FontMetrics metrics = graphics.getFontMetrics(font);
 
-        int maxCharsPerLine = (int)(image.getWidth() / metrics.charWidth('w'));
+        int maxCharsPerLine = (int)(bild.getImg().getWidth() / metrics.charWidth('w'));
 
         String[] lines = splitLines(text, maxCharsPerLine);
         int printHeight = Math.round(
-                image.getHeight() - (metrics.getHeight() * lines.length * lineDistance) - (font.getSize() * .5f)
+                bild.getImg().getHeight() - (metrics.getHeight() * lines.length * lineDistance) - (font.getSize() * .5f)
         );
         int textx, texty;
         for (String line: lines) {
@@ -95,11 +85,10 @@ public class Katzenmeme {
 
             printHeight += metrics.getHeight() * lineDistance;
             drawTextWithOutline(line, textx, texty, graphics, metrics.getHeight());
-            //graphics.drawString(line, textx, texty);
         }
 
         try {
-            ImageIO.write(image, "png", new File(SAVE_PATH));
+            ImageIO.write(bild.getImg(), "png", bild.getFile());
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -114,6 +103,11 @@ public class Katzenmeme {
     }
 
     public void send(MessageChannel channel) {
-        channel.sendFile(new File(SAVE_PATH)).queue();
+        channel.sendFile(bild.getFile()).queue();
     }
+
+    public File getFile() {
+        return file;
+    }
+
 }

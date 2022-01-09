@@ -16,7 +16,7 @@ public class Katzenbild {
     private int tries = 0;
     private final int max_tries = 5;
 
-    public Katzenbild(URL url) {
+    public Katzenbild() {
         try {
             imgFromUrl(getCatImageURL());
         } catch (NullPointerException | MalformedURLException e) {
@@ -39,7 +39,7 @@ public class Katzenbild {
                 System.out.println("File already exists.");
             }
 
-            if (file.length() > 750000){ //Don't excite the max file size (8388608 - ~text)
+            if (file.length() > 7500000){ //Don't excite the max file size (8388608 - ~text)
                 System.out.println("Filesize to big, another image is generated");
                 retryImageRetrival();
             }
@@ -61,7 +61,7 @@ public class Katzenbild {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
-            retryImageRetrival();
+            retryURLRetrival();
             System.out.println("Error while getting URL from API");
             e.printStackTrace();
             return getCatImageURL();
@@ -69,7 +69,7 @@ public class Katzenbild {
 
         if ((response == null)||(response.body() == null) ){
             System.out.println("Error while interacting with catApi, try again");
-            retryImageRetrival();
+            retryURLRetrival();
             return getCatImageURL();
         }
 
@@ -80,7 +80,7 @@ public class Katzenbild {
             url = new URL(value);
         } catch (Exception e){
             System.out.println("Error reading url, retry...");
-            retryImageRetrival();
+            retryURLRetrival();
         }
         return url;
     }
@@ -98,7 +98,7 @@ public class Katzenbild {
 
     private void retryImageRetrival(){
         tries++;
-        System.out.printf("Error during ImageRetrival. This is the %d try", tries);
+        System.out.printf("Error during ImageRetrival. This is the %d try \n", tries);
         try {
             if (tries<max_tries) imgFromUrl(getCatImageURL());
         } catch (NullPointerException | MalformedURLException e) {
@@ -106,4 +106,13 @@ public class Katzenbild {
             e.printStackTrace();
         }
     }
+
+    public File getFile() {
+        return file;
+    }
+
+    public BufferedImage getImg() {
+        return img;
+    }
+
 }
