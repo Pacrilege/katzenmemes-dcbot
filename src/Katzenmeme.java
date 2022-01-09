@@ -75,13 +75,15 @@ public class Katzenmeme {
         );
         int textx, texty;
         for (String line: lines) {
-            textx = rect.x + (rect.width - metrics.stringWidth(line)) / 2;
-            texty = printHeight + metrics.getAscent();
+            if (line != null){
+                textx = rect.x + (rect.width - metrics.stringWidth(line)) / 2;
+                texty = printHeight + metrics.getAscent();
 
-            System.out.printf("x: %d, y: %d, text: %s\n", textx, texty, line);
+                System.out.printf("x: %d, y: %d, text: %s\n", textx, texty, line);
 
-            printHeight += metrics.getHeight() * lineDistance;
-            drawTextWithOutline(line, textx, texty, graphics, metrics.getHeight());
+                printHeight += metrics.getHeight() * lineDistance;
+                drawTextWithOutline(line, textx, texty, graphics, metrics.getHeight());
+            }
         }
 
         try {
