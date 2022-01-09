@@ -17,12 +17,7 @@ public class Katzenmeme {
     private final String SAVE_PATH = "img/meme.png";
 
     public Katzenmeme(String text, int args) {
-        try {
-            imgFromUrl(getCatImageURL());
-        } catch (NullPointerException | MalformedURLException e) {
-            System.out.println("A problem occured during image retrieval :c");
-            e.printStackTrace();
-        }
+
 
         writeOnImg(text, 1.2f, 1);
     }
@@ -116,72 +111,6 @@ public class Katzenmeme {
         double scalingByImageArea = Math.sqrt(img.getWidth() * img.getHeight()) * 0.1;
         int r = (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
         return r > 0 ? r : 5;
-    }
-
-    //save image from URL to img/img.png
-    private void imgFromUrl(URL url) {
-        try {
-            BufferedImage img = ImageIO.read(url);
-            File file = new File(SAVE_PATH);
-
-            //create new file or overwrite if already there
-            if (file.createNewFile()) {
-                ImageIO.write(img, "png", file);
-                System.out.println("File created: " + file.getName());
-            } else {
-                ImageIO.write(img, "png", file);
-                System.out.println("File already exists.");
-            }
-
-            if (file.length() > 750000){ //Dont excite the max file size (8388608 - ~text)
-                System.out.println("Bild war zu groß, es wird ein neues generiert");
-                try {
-                    imgFromUrl(getCatImageURL());
-                } catch (NullPointerException | MalformedURLException e) {
-                    System.out.println("A problem occured during image retrieval :c");
-                    e.printStackTrace();
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Returns url to cat image, which is fetched from "theCatApi"
-    private static URL getCatImageURL() throws NullPointerException, MalformedURLException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpResponse<String> response = null;
-        HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"))
-                .header("x-api-key", System.getenv("CAT_API_TOKEN"))
-                .build();
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if ((response == null)||(response.body() == null) ){
-            System.out.println("Error while interacting with catApi, try again");
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return getCatImageURL();
-        }
-
-        String str = response.body();
-        String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid")); //get URL from response string
-        URL url = null;
-        try {
-            url = new URL(value);
-        } catch (Exception e){
-            System.out.println("Error while finding url, retry...");
-            getCatImageURL();
-        }
-        return url;
     }
 
     public void send(MessageChannel channel) {
