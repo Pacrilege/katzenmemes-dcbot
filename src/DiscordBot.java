@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
 import java.io.File;
@@ -42,7 +41,7 @@ public class DiscordBot extends ListenerAdapter {
      * @param event the event that gets fired by the message
      */
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         try{
             logger.info("Received message with text: {}", event.getMessage().getContentRaw());
 
@@ -66,6 +65,7 @@ public class DiscordBot extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
         Message message = event.getMessage();
         String content = message.getContentRaw();
+        if (content.equals("")) return;
         Scanner parseCommand = new Scanner(content);
         String cmd = parseCommand.next();
         if(cmd.equals("!lol")) { //write lol on cat image
