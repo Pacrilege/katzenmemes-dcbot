@@ -4,14 +4,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.MalformedURLException;
-import java.awt.image.*;
-import java.io.*;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import javax.imageio.*;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -80,7 +72,11 @@ public class Katzenmeme {
         Graphics graphics = image.getGraphics();
 
         graphics.setColor(Color.BLACK);
-        Font font = new Font("Impact", Font.BOLD, Math.round(calculateFontSize(image, text.length())));
+        Font font = new Font(
+                "Impact",
+                Font.BOLD,
+                Math.round(calculateFontSize(image, text.length()) * textScale)
+        );
 
         graphics.setFont(font);
         Rectangle rect = new Rectangle(image.getWidth(), image.getHeight());
@@ -155,14 +151,11 @@ public class Katzenmeme {
 
         String str = response.body();
         String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid")); //get URL from response string
-        URL url = null;
 
-        url = new URL(value);
-
-        return url;
+        return new URL(value);
     }
 
     public void send(MessageChannel channel) {
         channel.sendFile(new File(SAVE_PATH)).queue();
-    };
+    }
 }
