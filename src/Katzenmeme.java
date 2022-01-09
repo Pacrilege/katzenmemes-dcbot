@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import javax.imageio.*;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,6 +20,7 @@ import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
 public class Katzenmeme {
+    private final String SAVE_PATH = "img/meme.png";
     public Katzenmeme(String text, int args) {
         imgFromUrl(getCatImageURL());
         writeOnImg(text, 1.2f, 1);
@@ -166,4 +168,8 @@ public class Katzenmeme {
         }
         return url;
     }
+
+    public void sendMeme(MessageChannel channel) {
+        channel.sendFile(new File(SAVE_PATH)).queue();
+    };
 }
