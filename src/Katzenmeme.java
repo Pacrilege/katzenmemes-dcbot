@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class Katzenmeme {
@@ -131,6 +132,17 @@ public class Katzenmeme {
                 ImageIO.write(img, "png", file);
                 System.out.println("File already exists.");
             }
+
+            if (file.length() > 750000){ //Dont excite the max file size (8388608 - ~text)
+                System.out.println("Bild war zu groß, es wird ein neues generiert");
+                try {
+                    imgFromUrl(getCatImageURL());
+                } catch (NullPointerException | MalformedURLException e) {
+                    System.out.println("A problem occured during image retrieval :c");
+                    e.printStackTrace();
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,7 +153,7 @@ public class Katzenmeme {
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = null;
         HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("https://api.thecatapi.com/v1/images/search?mime_types=png"))
+                        URI.create("https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"))
                 .header("x-api-key", System.getenv("CAT_API_TOKEN"))
                 .build();
         try {
