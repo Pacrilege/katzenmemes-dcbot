@@ -3,6 +3,7 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.MalformedURLException;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URI;
@@ -21,13 +22,19 @@ import java.util.ArrayList;
 
 public class Katzenmeme {
     private final String SAVE_PATH = "img/meme.png";
+
     public Katzenmeme(String text, int args) {
-        imgFromUrl(getCatImageURL());
+        try {
+            imgFromUrl(getCatImageURL());
+        } catch (NullPointerException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         writeOnImg(text, 1.2f, 1);
     }
 
     //divide caption input in several lines/strings
-    static String[] splitLines(String text, final int maxDigitInLine){
+    private String[] splitLines(String text, final int maxDigitInLine){
 
         String[] wordArray = text.split("\\s+");
         ArrayList<StringBuffer> lineArray = new ArrayList<StringBuffer>();
@@ -48,7 +55,7 @@ public class Katzenmeme {
     }
 
     // take a wild fucking guess
-    static void drawTextWithOutline(String text, int x, int y, Graphics g, int fontheight){
+    private void drawTextWithOutline(String text, int x, int y, Graphics g, int fontheight){
         g.setColor(Color.black);
         int ow = (int)(fontheight / 15);
         ow = ow > 0 ? ow : 1;
@@ -61,10 +68,10 @@ public class Katzenmeme {
         g.drawString(text, x, y);
     }
 
-    static void writeOnImg(String text, float lineDistance, float textScale){
+    private void writeOnImg(String text, float lineDistance, float textScale){
         BufferedImage image = null;
         try {
-            File img = new File("img/img.png");
+            File img = new File(SAVE_PATH);
             image = ImageIO.read(img);
         } catch (IOException e){
             e.printStackTrace();
@@ -99,8 +106,7 @@ public class Katzenmeme {
         }
 
         try {
-            ImageIO.write(image, "png", new File(
-                    "img/img.png"));
+            ImageIO.write(image, "png", new File(SAVE_PATH));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -108,17 +114,17 @@ public class Katzenmeme {
     }
 
     // calculates font size based on image area and text length
-    private static int calculateFontSize(BufferedImage img, int textLength) {
+    private int calculateFontSize(BufferedImage img, int textLength) {
         double scalingByImageArea = Math.sqrt(img.getWidth() * img.getHeight()) * 0.1;
         int r = (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
         return r > 0 ? r : 5;
     }
 
     //save image from URL to img/img.png
-    static void imgFromUrl(URL url) {
+    private void imgFromUrl(URL url) {
         try {
             BufferedImage img = ImageIO.read(url);
-            File file = new File("img/img.png");
+            File file = new File(SAVE_PATH);
 
             //create new file or overwrite if already there
             if (file.createNewFile()) {
@@ -134,7 +140,7 @@ public class Katzenmeme {
     }
 
     //Returns url to cat image, which is fetched from "theCatApi"
-    static URL getCatImageURL() {
+    private static URL getCatImageURL() throws NullPointerException, MalformedURLException {
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = null;
         HttpRequest request = HttpRequest.newBuilder(
@@ -146,30 +152,17 @@ public class Katzenmeme {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //assert response != null;
-        if (response == null){
-            System.out.println("Error while interacting with catApi");
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return getCatImageURL();
-        }
 
         String str = response.body();
         String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid")); //get URL from response string
         URL url = null;
-        try {
-            url = new URL(value);
-        } catch (Exception e){
-            System.out.println("Error while finding url, retry...");
-            getCatImageURL();
-        }
+
+        url = new URL(value);
+
         return url;
     }
 
-    public void sendMeme(MessageChannel channel) {
+    public void send(MessageChannel channel) {
         channel.sendFile(new File(SAVE_PATH)).queue();
     };
 }
