@@ -69,14 +69,12 @@ public class DiscordBot extends ListenerAdapter {
         Scanner parseCommand = new Scanner(content);
         String cmd = parseCommand.next();
         if(cmd.equals("!lol")) { //write lol on cat image
-            catFinder.imgFromUrl(catFinder.getCatImageURL());
-            addText.writeOnImg("LOL", 1.2f, 1);
-
+            Katzenmeme meme = new Katzenmeme("LOL", 0);
+            meme.send(message.getChannel());
             //event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
         } else if (cmd.equals("!caption")) { //write user input on cat image
-            catFinder.imgFromUrl(catFinder.getCatImageURL());
-            addText.writeOnImg(parseCommand.nextLine(), 1.2f, 1f);
-
+            Katzenmeme meme = new Katzenmeme(parseCommand.nextLine(), 0);
+            meme.send(message.getChannel());
             // event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
         }
     }
