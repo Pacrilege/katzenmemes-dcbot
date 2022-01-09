@@ -55,7 +55,7 @@ public class addText {
         Graphics graphics = image.getGraphics();
 
         graphics.setColor(Color.BLACK);
-        Font font = new Font("Impact", Font.BOLD, Math.round(findTextSize(image, text.length())));
+        Font font = new Font("Impact", Font.BOLD, Math.round(calculateFontSize(image, text.length())));
 
         graphics.setFont(font);
         Rectangle rect = new Rectangle(image.getWidth(), image.getHeight());
@@ -89,7 +89,8 @@ public class addText {
         System.out.println("Image Created");
     }
 
-    private static int findTextSize(BufferedImage img, int textLength) {
+    // calculates font size based on image area and text length
+    private static int calculateFontSize(BufferedImage img, int textLength) {
         double scalingByImageArea = Math.sqrt(img.getWidth() * img.getHeight()) * 0.1;
         int r = (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
         return r > 0 ? r : 5;
