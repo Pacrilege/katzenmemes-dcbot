@@ -74,7 +74,7 @@ public class Katzenmeme {
 
         graphics.setColor(Color.BLACK);
         Font font = new Font(
-                "Impact",
+                "Arial",
                 Font.BOLD,
                 Math.round(calculateFontSize(image, text.length()) * textScale)
         );
@@ -150,10 +150,26 @@ public class Katzenmeme {
             e.printStackTrace();
         }
 
+        if ((response == null)||(response.body() == null) ){
+            System.out.println("Error while interacting with catApi");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return getCatImageURL();
+        }
+
         String str = response.body();
         String value = str.substring(str.indexOf("\"url\":\"")+7, str.indexOf("\",\"wid")); //get URL from response string
-
-        return new URL(value);
+        URL url = null;
+        try {
+            url = new URL(value);
+        } catch (Exception e){
+            System.out.println("Error while finding url, retry...");
+            getCatImageURL();
+        }
+        return url;
     }
 
     public void send(MessageChannel channel) {
