@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Katzenmeme {
     private Katzenbild bild;
@@ -33,10 +34,27 @@ public class Katzenmeme {
             if (lineArray.get(lineArray.size() - 1).length() >= maxDigitInLine) lineArray.add(new StringBuffer());
         }
 
-        String[] arr = new String[lineArray.size()];
-        for (int i = 0; i < arr.length; i++) {
-            if (!lineArray.get(i).toString().equals("")) arr[i] = lineArray.get(i).toString();
+        int notNullValues = 0;
+        for (StringBuffer s: lineArray) {
+            if ((s != null) && !s.isEmpty()){
+                System.out.println(s);
+                notNullValues++;
+            }
         }
+        System.out.println(notNullValues);
+
+        String[] arr = new String[notNullValues];
+
+        int idx_arr = 0;
+        int idx_buf = 0;
+        while (idx_arr < notNullValues){
+            if ((!lineArray.get(idx_buf).toString().equals(""))){
+                arr[idx_arr] = lineArray.get(idx_buf).toString();
+                idx_buf++;
+            }
+            idx_arr++;
+        }
+        System.out.println(Arrays.deepToString(arr));
         return arr;
     }
 
