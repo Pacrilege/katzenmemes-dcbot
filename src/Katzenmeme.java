@@ -19,6 +19,7 @@ public class Katzenmeme {
         try {
             imgFromUrl(getCatImageURL());
         } catch (NullPointerException | MalformedURLException e) {
+            System.out.println("A problem occured during image retrieval :c");
             e.printStackTrace();
         }
 
