@@ -10,13 +10,17 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Katzenbild {
-    private final String SAVE_PATH = "img/meme.png";
-    public final File file = new File(SAVE_PATH);
+    private String SAVE_PATH;
+    public File file;
     public BufferedImage img = null;
-    private int tries = 0;
-    private final int max_tries = 5;
+    private int attempts = 0;
+    private static final int max_tries = 5;
+    private static int amount_files = 0;
+    private static final int max_files = 5;
+
 
     public Katzenbild() {
+        make_File();
         try {
             imgFromUrl(getCatImageURL());
         } catch (NullPointerException | MalformedURLException e) {
@@ -24,6 +28,13 @@ public class Katzenbild {
             System.out.println("A problem occured during image retrieval :c");
             e.printStackTrace();
         }
+    }
+
+    private void make_File(){
+        if (amount_files >= max_files) amount_files = 0;
+        SAVE_PATH = String.format("img/meme%d.png", amount_files);
+        file = new File(SAVE_PATH);
+        amount_files++;
     }
 
     //save image from URL to img/img.png
@@ -86,10 +97,10 @@ public class Katzenbild {
     }
 
     private void retryURLRetrival(){
-        tries++;
-        System.out.printf("Error during URLRetrival. This is the %d try", tries);
+        attempts++;
+        System.out.printf("Error during URLRetrival. This is the %d try", attempts);
         try {
-            if (tries<max_tries) getCatImageURL();
+            if (attempts <max_tries) getCatImageURL();
         } catch (NullPointerException | MalformedURLException e) {
             System.out.println("A problem occured during url retrieval :c");
             e.printStackTrace();
@@ -97,14 +108,18 @@ public class Katzenbild {
     }
 
     private void retryImageRetrival(){
-        tries++;
-        System.out.printf("Error during ImageRetrival. This is the %d try \n", tries);
+        attempts++;
+        System.out.printf("Error during ImageRetrival. This is the %d try \n", attempts);
         try {
-            if (tries<max_tries) imgFromUrl(getCatImageURL());
+            if (attempts <max_tries) imgFromUrl(getCatImageURL());
         } catch (NullPointerException | MalformedURLException e) {
             System.out.println("A problem occured during image retrieval :c");
             e.printStackTrace();
         }
+    }
+
+    public String getSAVE_PATH() {
+        return SAVE_PATH;
     }
 
     public File getFile() {
