@@ -30,8 +30,10 @@ public class Katzenmeme {
 
         lineArray.add(new StringBuffer());
         for (String s : wordArray) {
+            if ((lineArray.get(lineArray.size() - 1).length() != 0)&& //If line is not empty and
+                (lineArray.get(lineArray.size() - 1).length() + s.length() >= maxDigitInLine)) // would be longer than max
+                lineArray.add(new StringBuffer()); //new line
             lineArray.get(lineArray.size() - 1).append(s).append(" ");
-            if (lineArray.get(lineArray.size() - 1).length() >= maxDigitInLine) lineArray.add(new StringBuffer());
         }
 
         int notNullValues = 0;
@@ -41,7 +43,6 @@ public class Katzenmeme {
                 notNullValues++;
             }
         }
-        System.out.println(notNullValues);
 
         String[] arr = new String[notNullValues];
 
