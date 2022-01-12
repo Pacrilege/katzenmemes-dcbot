@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -68,14 +70,20 @@ public class DiscordBot extends ListenerAdapter {
         if (content.equals("")) return;
         Scanner parseCommand = new Scanner(content);
         String cmd = parseCommand.next();
-        if(cmd.equals("!lol")) { //write lol on cat image
-            Katzenmeme meme = new Katzenmeme("LOL", 0);
-            meme.send(message.getChannel());
-            //event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
-        } else if (cmd.equals("!caption")) { //write user input on cat image
-            Katzenmeme meme = new Katzenmeme(parseCommand.nextLine(), 0);
-            meme.send(message.getChannel());
-            // event.getMessage().getChannel().sendFile(new File("img/img.png")).queue();
+        if (!cmd.startsWith("!")) return;
+        // zerlegt den Rest der Nachricht
+        List<String> args = new ArrayList<>();
+        while (parseCommand.hasNext()) {
+            args.add(parseCommand.next());
+        }
+
+        switch (cmd) {
+            case "!lol" -> cmdLol();
+            case "!caption" -> cmdCaption();
         }
     }
+
+    private void cmdLol() {
+
+    };
 }
