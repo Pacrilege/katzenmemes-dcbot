@@ -11,12 +11,12 @@ import java.net.http.HttpResponse;
 
 public class Katzenbild {
     private String SAVE_PATH;
-    public File file;
-    public BufferedImage img = null;
+    private File file;
+    private BufferedImage img = null;
     private int attempts = 0;
-    private static final int max_tries = 5;
+    private static final int max_tries = 5; //try to generate meme for max_tries attempts
     private static int amount_files = 0;
-    private static final int max_files = 5;
+    private static final int max_files = 5; //safe up to max_files memes
 
 
     public Katzenbild() {
@@ -31,8 +31,8 @@ public class Katzenbild {
     }
 
     private void make_File(){
-        if (amount_files >= max_files) amount_files = 0;
-        SAVE_PATH = String.format("img/meme%d.png", amount_files);
+        if (amount_files >= max_files) amount_files = 0; //If five images are saved, overwrite first one
+            SAVE_PATH = String.format("img/meme%d.png", amount_files);
         file = new File(SAVE_PATH);
         amount_files++;
     }
@@ -50,7 +50,7 @@ public class Katzenbild {
                 System.out.println("File already exists.");
             }
 
-            if (file.length() > 7500000){ //Don't excite the max file size (8388608 - ~text)
+            if (file.length() > 7500000){ //Don't exceed discords max file size (8388608 - ~text)
                 System.out.println("Filesize to big, another image is generated");
                 retryImageRetrival();
             }
