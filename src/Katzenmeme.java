@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Katzenmeme {
-    private Katzenbild bild;
+    private final Katzenbild bild;
 
     public Katzenmeme(String text, int args) {
         bild = new Katzenbild();
@@ -36,26 +36,26 @@ public class Katzenmeme {
             lineArray.get(lineArray.size() - 1).append(s).append(" ");
         }
 
-        int notNullValues = 0;
-        for (StringBuffer s: lineArray) {
-            if ((s != null) && !s.isEmpty()){
-                System.out.println(s);
+        //--- Save Stringbuffer in StringArray without any null values
+        int notNullValues = 0; //Count all not null values in ArrayList
+        for (StringBuffer s: lineArray)
+            if ((s != null) && !s.isEmpty())
                 notNullValues++;
-            }
-        }
 
         String[] arr = new String[notNullValues];
 
         int idx_arr = 0;
         int idx_buf = 0;
         while (idx_arr < notNullValues){
-            if ((!lineArray.get(idx_buf).toString().equals(""))){
+            if ((!lineArray.get(idx_buf).isEmpty())){               //Save String in Array if not empty
                 arr[idx_arr] = lineArray.get(idx_buf).toString();
-                idx_buf++;
+                idx_arr++;
             }
-            idx_arr++;
+            idx_buf++;
         }
         System.out.println(Arrays.deepToString(arr));
+        //---
+
         return arr;
     }
 
