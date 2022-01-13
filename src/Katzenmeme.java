@@ -59,28 +59,10 @@ public class Katzenmeme {
         return arr;
     }
 
-    // take a wild fucking guess
-    private void drawTextWithOutline(String text, int x, int y, Graphics g, int fontheight){
-        g.setColor(Color.black);
-        int ow = (int)(fontheight / 15);
-        ow = ow > 0 ? ow : 1;
-        g.drawString(text, x + ow, y - ow);
-        g.drawString(text, x + ow, y + ow);
-        g.drawString(text, x - ow, y - ow);
-        g.drawString(text, x - ow, y + ow);
-
-        g.setColor(Color.white);
-        g.drawString(text, x, y);
-    }
-
     private void writeOnImg(String text, float lineDistance, float textScale){
         Graphics graphics = bild.getImg().getGraphics();
         graphics.setColor(Color.BLACK);
-        Font font = new Font(
-                "Arial",
-                Font.BOLD,
-                Math.round(calculateFontSize(bild.getImg(), text.length()) * textScale)
-        );
+
 
         graphics.setFont(font);
         Rectangle rect = new Rectangle(bild.getImg().getWidth(), bild.getImg().getHeight());
@@ -111,13 +93,6 @@ public class Katzenmeme {
             e.printStackTrace();
         }
         System.out.println("Image Created");
-    }
-
-    // calculates font size based on image area and text length
-    private int calculateFontSize(BufferedImage img, int textLength) {
-        double scalingByImageArea = Math.sqrt(img.getWidth() * img.getHeight()) * 0.1;
-        int r = (int)Math.round((textLength < 35) ? scalingByImageArea : (scalingByImageArea * 35 / textLength));
-        return r > 0 ? r : 5;
     }
 
     public void send(MessageChannel channel) {
