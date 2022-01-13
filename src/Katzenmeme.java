@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class Katzenmeme {
     private Katzenbild bild;
 
-    public Katzenmeme(String text, int args) {
+    public Katzenmeme(String args) {
         bild = new Katzenbild();
         writeOnImg(text, 1.2f, 1);
     }

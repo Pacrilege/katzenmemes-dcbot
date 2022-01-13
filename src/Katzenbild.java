@@ -20,7 +20,7 @@ public class Katzenbild {
 
 
     public Katzenbild() {
-        make_File();
+        makeFile();
         try {
             imgFromUrl(getCatImageURL());
         } catch (NullPointerException | MalformedURLException e) {
@@ -30,7 +30,7 @@ public class Katzenbild {
         }
     }
 
-    private void make_File(){
+    private void makeFile(){
         if (amount_files >= max_files) amount_files = 0;
         SAVE_PATH = String.format("img/meme%d.png", amount_files);
         file = new File(SAVE_PATH);

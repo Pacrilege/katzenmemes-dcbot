@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -72,18 +71,11 @@ public class DiscordBot extends ListenerAdapter {
         String cmd = parseCommand.next();
         if (!cmd.startsWith("!")) return;
         // zerlegt den Rest der Nachricht
-        List<String> args = new ArrayList<>();
-        while (parseCommand.hasNext()) {
-            args.add(parseCommand.next());
-        }
 
         switch (cmd) {
             case "!lol" -> cmdLol();
             case "!caption" -> cmdCaption();
+            case "!help" -> cmdHelp();
         }
     }
-
-    private void cmdLol() {
-
-    };
 }
