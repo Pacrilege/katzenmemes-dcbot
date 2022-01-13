@@ -1,23 +1,21 @@
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Scanner;
+import java.util.*;
 
 public class Args {
     private String topText = "";
     private String bottomText = ""; //lol
-    private String CATegory;
+    private Integer CATegory;
 
     private static Dictionary<String, Integer> categories;
 
-    public Args(String cmd) {
+    public Args(String cmd) throws TooManyCategoriesException {
         // it's a surprise tool that will help us later
-        categories.put("boxes", 5);
-        categories.put("clothes", 15);
-        categories.put("hats", 1);
-        categories.put("sinks", 14);
-        categories.put("space", 2);
-        categories.put("sunglasses", 4);
-        categories.put("ties", 7);
+        categories.put("-boxes", 5);
+        categories.put("-clothes", 15);
+        categories.put("-hats", 1);
+        categories.put("-sinks", 14);
+        categories.put("-space", 2);
+        categories.put("-sunglasses", 4);
+        categories.put("-ties", 7);
 
         String[] args = cmd.split(" ");
 
@@ -27,12 +25,18 @@ public class Args {
         if (top != null && bot != null) {
             bottomText = arrToString(args, bot, top > bot ? top : args.length);
             topText = arrToString(args, top, top < bot ? bot : args.length);
+            CATegory = findCategory(args, top < bot ? top : bot);
         } else if (top != null) {
             topText = arrToString(args, top);
+            CATegory = findCategory(args, top);
         } else if (bot != null) {
             bottomText = arrToString(args, bot);
+            CATegory = findCategory(args, bot);
         } else {
-            bottomText = arrToString(args);
+            int i = 0;
+            while (args[i].startsWith("-")) i++;
+            CATegory = findCategory(args, i);
+            bottomText = arrToString(args, i);
         }
     }
 
@@ -44,7 +48,7 @@ public class Args {
         return bottomText;
     }
 
-    public String getCategory() {
+    public Integer getCategory() {
         return CATegory;
     }
 
@@ -65,19 +69,26 @@ public class Args {
         return opt.toString();
     }
 
-    private String arrToString(String[] arr, int from) {
-        return arrToString(arr, from, arr.length);
+    private String arrToString(String[] arr, int indexFrom) {
+        return arrToString(arr, indexFrom, arr.length);
     }
 
     private String arrToString(String[] arr) {
         return arrToString(arr, 0, arr.length);
     }
 
-    private String findCategory(String[] arr, int limit) {
-
+    private Integer findCategory(String[] arr, int limit) throws TooManyCategoriesException {
+        HashSet<String> cEnum = (HashSet<String>) categories.keys();
+        String c = null;
+        for (int i = 0; i < limit; i++) {
+            if (cEnum.contains(arr[i]))
+                if (c == null) c = arr[i];
+                else throw new TooManyCategoriesException();
+        }
+        return categories.get(c);
     }
 
-    private String findCategory(String[] arr) {
+    private Integer findCategory(String[] arr) throws TooManyCategoriesException {
         return findCategory(arr, arr.length);
     }
 }
