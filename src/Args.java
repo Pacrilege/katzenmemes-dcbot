@@ -3,7 +3,7 @@ import java.util.*;
 public class Args {
     private String topText = "";
     private String bottomText = ""; //lol
-    private Integer CATegory;
+    private String CATegory;
 
     private static Dictionary<String, Integer> categories;
 
@@ -25,17 +25,17 @@ public class Args {
         if (top != null && bot != null) {
             bottomText = arrToString(args, bot, top > bot ? top : args.length);
             topText = arrToString(args, top, top < bot ? bot : args.length);
-            CATegory = findCategory(args, top < bot ? top : bot);
+            CATegory = generateCategoryString(args, top < bot ? top : bot);
         } else if (top != null) {
             topText = arrToString(args, top);
-            CATegory = findCategory(args, top);
+            CATegory = generateCategoryString(args, top);
         } else if (bot != null) {
             bottomText = arrToString(args, bot);
-            CATegory = findCategory(args, bot);
+            CATegory = generateCategoryString(args, bot);
         } else {
             int i = 0;
             while (args[i].startsWith("-")) i++;
-            CATegory = findCategory(args, i);
+            CATegory = generateCategoryString(args, i);
             bottomText = arrToString(args, i);
         }
     }
@@ -48,7 +48,7 @@ public class Args {
         return bottomText;
     }
 
-    public Integer getCategory() {
+    public String getCategory() {
         return CATegory;
     }
 
@@ -77,18 +77,21 @@ public class Args {
         return arrToString(arr, 0, arr.length);
     }
 
-    private Integer findCategory(String[] arr, int limit) throws TooManyCategoriesException {
-        HashSet<String> cEnum = (HashSet<String>) categories.keys();
-        String c = null;
+    private String generateCategoryString(String[] arr, int limit) {
+        StringBuilder c = new StringBuilder("?category_ids=");
+
+        Integer cid;
         for (int i = 0; i < limit; i++) {
-            if (cEnum.contains(arr[i]))
-                if (c == null) c = arr[i];
-                else throw new TooManyCategoriesException();
+            cid = categories.get(arr[i]);
+            if (cid != null)
+                c.append(cid.toString())
+                        .append(",");
         }
-        return categories.get(c);
+
+        return c.toString();
     }
 
-    private Integer findCategory(String[] arr) throws TooManyCategoriesException {
-        return findCategory(arr, arr.length);
+    private String generateCategoryString(String[] arr) throws TooManyCategoriesException {
+        return generateCategoryString(arr, arr.length);
     }
 }

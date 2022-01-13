@@ -13,13 +13,15 @@ public class Katzenbild {
     private String SAVE_PATH;
     public File file;
     public BufferedImage img = null;
+    private String categoryString;
     private int attempts = 0;
     private static final int max_tries = 5;
     private static int amount_files = 0;
     private static final int max_files = 5;
 
 
-    public Katzenbild() {
+    public Katzenbild(String categoryString) {
+        this.categoryString = categoryString;
         makeFile();
         try {
             imgFromUrl(getCatImageURL());
@@ -66,7 +68,7 @@ public class Katzenbild {
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = null;
         HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("https://api.thecatapi.com/v1/images/search?mime_types=jpg,png"))
+                        URI.create("https://api.thecatapi.com/v1/images/search?mime_types=jpg,png" + categoryString))
                 .header("x-api-key", System.getenv("CAT_API_TOKEN"))
                 .build();
         try {
