@@ -1,6 +1,8 @@
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
@@ -70,12 +72,28 @@ public class DiscordBot extends ListenerAdapter {
         Scanner parseCommand = new Scanner(content);
         String cmd = parseCommand.next();
         if (!cmd.startsWith("!")) return;
-        // zerlegt den Rest der Nachricht
 
         switch (cmd) {
-            case "!lol" -> cmdLol();
-            case "!caption" -> cmdCaption();
-            case "!help" -> cmdHelp();
+            case "!lol" -> cmdLol(content, message.getChannel());
+            case "!caption" -> cmdCaption(content, message.getChannel());
+            case "!help" -> cmdHelp(message.getChannel());
         }
+    }
+
+    void cmdLol(String cmd, MessageChannel c) {
+        Args args = new Args(cmd);
+        args.setBottomText("LOL");
+        args.setTopText("");
+        Katzenmeme meme = new Katzenmeme(args);
+        meme.send(c);
+    }
+
+    void cmdCaption(String cmd, MessageChannel c) {
+        Katzenmeme meme = new Katzenmeme(new Args(cmd));
+        meme.send(c);
+    }
+
+    void cmdHelp(MessageChannel c) {
+        c.sendMessage("oof").queue();
     }
 }

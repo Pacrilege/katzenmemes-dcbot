@@ -16,10 +16,26 @@ import java.util.Arrays;
 
 public class Katzenmeme {
     private Katzenbild bild;
+    private ArrayList<Textbox> textboxes;
 
     public Katzenmeme(Args args) {
+        textboxes = new ArrayList<>();
         bild = new Katzenbild(args.getCategory());
-        writeOnImg(text, 1.2f, 1);
+        Graphics graphics = bild.getImg().getGraphics();
+        graphics.setColor(Color.BLACK);
+        textboxes.add(new Textbox(
+                args.getTopText(),
+                new Point((int) (bild.getImg().getWidth() * 0.1), (int) (bild.getImg().getHeight() * 0.05)),
+                new Point((int) (bild.getImg().getWidth() * 0.9), (int) (bild.getImg().getHeight() * 0.35)),
+                graphics
+        ));
+        textboxes.add(new Textbox(
+                args.getBottomText(),
+                new Point((int) (bild.getImg().getWidth() * 0.1), (int) (bild.getImg().getHeight() * 0.65)),
+                new Point((int) (bild.getImg().getWidth() * 0.9), (int) (bild.getImg().getHeight() * 0.95)),
+                graphics
+        ));
+        writeOnImg();
     }
 
     //divide caption input in several lines/strings
@@ -59,32 +75,9 @@ public class Katzenmeme {
         return arr;
     }
 
-    private void writeOnImg(String text, float lineDistance, float textScale){
-        Graphics graphics = bild.getImg().getGraphics();
-        graphics.setColor(Color.BLACK);
-
-
-        graphics.setFont(font);
-        Rectangle rect = new Rectangle(bild.getImg().getWidth(), bild.getImg().getHeight());
-        FontMetrics metrics = graphics.getFontMetrics(font);
-
-        int maxCharsPerLine = (int)(bild.getImg().getWidth() / metrics.charWidth('w'));
-
-        String[] lines = splitLines(text, maxCharsPerLine);
-        int printHeight = Math.round(
-                bild.getImg().getHeight() - (metrics.getHeight() * lines.length * lineDistance) - (font.getSize() * .5f)
-        );
-        int textx, texty;
-        for (String line: lines) {
-            if (line != null){
-                textx = rect.x + (rect.width - metrics.stringWidth(line)) / 2;
-                texty = printHeight + metrics.getAscent();
-
-                System.out.printf("x: %d, y: %d, text: %s\n", textx, texty, line);
-
-                printHeight += metrics.getHeight() * lineDistance;
-                drawTextWithOutline(line, textx, texty, graphics, metrics.getHeight());
-            }
+    private void writeOnImg(){
+        for (Textbox t: textboxes) {
+            t.draw();
         }
 
         try {
@@ -98,6 +91,4 @@ public class Katzenmeme {
     public void send(MessageChannel channel) {
         channel.sendFile(bild.getFile()).queue();
     }
-
-
 }

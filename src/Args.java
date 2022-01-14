@@ -3,12 +3,13 @@ import java.util.*;
 public class Args {
     private String topText = "";
     private String bottomText = ""; //lol
-    private String CATegory;
+    private String CATegory = "";
 
     private static Dictionary<String, Integer> categories;
 
-    public Args(String cmd) throws TooManyCategoriesException {
+    public Args(String cmd) {
         // it's a surprise tool that will help us later
+        categories = new Hashtable<>();
         categories.put("-boxes", 5);
         categories.put("-clothes", 15);
         categories.put("-hats", 1);
@@ -17,20 +18,26 @@ public class Args {
         categories.put("-sunglasses", 4);
         categories.put("-ties", 7);
 
-        String[] args = cmd.split(" ");
+        String[] cmdSplit = cmd.split("\\s+");
+        String[] args = Arrays.copyOfRange(cmdSplit, 1, cmdSplit.length);
+
+        if (args.length == 0) return;
 
         Integer top = indexOf(args, "-top");
         Integer bot = indexOf(args, "-bottom");
 
         if (top != null && bot != null) {
-            bottomText = arrToString(args, bot, top > bot ? top : args.length);
-            topText = arrToString(args, top, top < bot ? bot : args.length);
+            top++; bot++;
+            bottomText = arrToString(args, bot, top > bot ? top - 1 : args.length);
+            topText = arrToString(args, top, top < bot ? bot - 1: args.length);
             CATegory = generateCategoryString(args, top < bot ? top : bot);
         } else if (top != null) {
-            topText = arrToString(args, top);
+            top++;
+            topText = arrToString(args, top, args.length);
             CATegory = generateCategoryString(args, top);
         } else if (bot != null) {
-            bottomText = arrToString(args, bot);
+            bot++;
+            bottomText = arrToString(args, bot, args.length);
             CATegory = generateCategoryString(args, bot);
         } else {
             int i = 0;
@@ -44,9 +51,13 @@ public class Args {
         return topText;
     }
 
+    public void setTopText(String t) { topText = t; }
+
     public String getBottomText() {
         return bottomText;
     }
+
+    public void setBottomText(String t) { bottomText = t; }
 
     public String getCategory() {
         return CATegory;
@@ -91,7 +102,7 @@ public class Args {
         return c.toString();
     }
 
-    private String generateCategoryString(String[] arr) throws TooManyCategoriesException {
+    private String generateCategoryString(String[] arr) {
         return generateCategoryString(arr, arr.length);
     }
 }
