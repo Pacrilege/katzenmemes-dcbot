@@ -19,7 +19,7 @@ public class Katzenmeme {
 
     public Katzenmeme(String text, int args) {
         bild = new Katzenbild();
-        writeOnImg(text, 1.2f, 1);
+        writeOnImg(text, 1.0f, 0.7f);
     }
 
     //divide caption input in several lines/strings
